@@ -300,28 +300,28 @@ NSMutableDictionary *MusicIDsMap;
     }
     NSMutableDictionary *result = [NSMutableDictionary dictionary];
     id dic = res[@"songs"][0];
-    if(![self isEmpty:dic[@"hMusic"]]){
+    if(![self isValid:dic[@"hMusic"]]){
       [result setObject:
        [self urlFromFid:dic[@"hMusic"][@"dfsId"]] forKey:@"url"];
       [result setObject:dic[@"hMusic"][@"extension"] forKey:@"type"];
       [result setObject:dic[@"hMusic"][@"bitrate"] forKey:@"br"];
       [result setObject:dic[@"hMusic"][@"size"] forKey:@"size"];
       [result setObject:dic[@"hMusic"][@"volumeDelta"] forKey:@"gain"];
-    }else if(![self isEmpty:dic[@"mMusic"]]){
+    }else if(![self isValid:dic[@"mMusic"]]){
       [result setObject:
        [self urlFromFid:dic[@"mMusic"][@"dfsId"]] forKey:@"url"];
       [result setObject:dic[@"mMusic"][@"extension"] forKey:@"type"];
       [result setObject:dic[@"mMusic"][@"bitrate"] forKey:@"br"];
       [result setObject:dic[@"mMusic"][@"size"] forKey:@"size"];
       [result setObject:dic[@"mMusic"][@"volumeDelta"] forKey:@"gain"];
-    }else if(![self isEmpty:dic[@"bMusic"]]){
+    }else if(![self isValid:dic[@"bMusic"]]){
       [result setObject:
        [self urlFromFid:dic[@"bMusic"][@"dfsId"]] forKey:@"url"];
       [result setObject:dic[@"bMusic"][@"extension"] forKey:@"type"];
       [result setObject:dic[@"bMusic"][@"bitrate"] forKey:@"br"];
       [result setObject:dic[@"bMusic"][@"size"] forKey:@"size"];
       [result setObject:dic[@"bMusic"][@"volumeDelta"] forKey:@"gain"];
-    }else if(![self isEmpty:dic[@"audition"]]){
+    }else if(![self isValid:dic[@"audition"]]){
       [result setObject:
        [self urlFromFid:dic[@"audition"][@"dfsId"]] forKey:@"url"];
       [result setObject:dic[@"audition"][@"extension"] forKey:@"type"];
@@ -342,37 +342,52 @@ NSMutableDictionary *MusicIDsMap;
   if (!dic || [dic isEqual:[NSNull null]] || ![dic count]){
      return [self selectMediaProfileFromServer:mid];
   }
+  NSLog(@"Song data: %@", dic);
   [result setObject:@"mp3" forKey:@"type"];
-  if (![self isEmpty:dic[@"h"]]) {
+  if (![self isValid:dic[@"h"]]) {
     [result setObject:
      [self urlFromFid:dic[@"h"][@"fid"]] forKey:@"url"];
     [result setObject:dic[@"h"][@"br"] forKey:@"br"];
     [result setObject:dic[@"h"][@"size"] forKey:@"size"];
     [result setObject:dic[@"h"][@"vd"] forKey:@"gain"];
-  }else if(![self isEmpty:dic[@"m"]]){
+  }else if(![self isValid:dic[@"m"]]){
     [result setObject:
      [self urlFromFid:dic[@"m"][@"fid"]] forKey:@"url"];
     [result setObject:dic[@"m"][@"br"] forKey:@"br"];
     [result setObject:dic[@"m"][@"size"] forKey:@"size"];
     [result setObject:dic[@"m"][@"vd"] forKey:@"gain"];
-  }else if(![self isEmpty:dic[@"l"]]){
+  }else if(![self isValid:dic[@"l"]]){
     [result setObject:
      [self urlFromFid:dic[@"l"][@"fid"]] forKey:@"url"];
     [result setObject:dic[@"l"][@"br"] forKey:@"br"];
     [result setObject:dic[@"l"][@"size"] forKey:@"size"];
     [result setObject:dic[@"l"][@"vd"] forKey:@"gain"];
-  }else if(![self isEmpty:dic[@"a"]]){
+  }else if(![self isValid:dic[@"a"]]){
     [result setObject:
      [self urlFromFid:dic[@"a"][@"fid"]] forKey:@"url"];
     [result setObject:dic[@"a"][@"br"] forKey:@"br"];
     [result setObject:dic[@"a"][@"size"] forKey:@"size"];
     [result setObject:dic[@"a"][@"vd"] forKey:@"gain"];
+  }else{
+     return [self selectMediaProfileFromServer:mid];
   }
   if(!result[@"url"]){
     NSLog(@"Fid select failed");
     return nil;
   }
   return result;
+}
+
+- (BOOL) isValid:(NSDictionary*)object{
+if ([self isEmpty:object]) {
+  if (object[@"fid"] && ![object[@"fid"] isEqualToNumber: @0]) {
+    return YES;
+  }
+  if (object[@"dfsId"] && ![object[@"dfsId"] isEqualToNumber: @0]) {
+    return YES;
+  }
+}
+return NO;
 }
 
 - (NSString *)urlFromFid:(NSNumber *)fid{
