@@ -62,6 +62,7 @@ NSMutableDictionary *MusicIDsMap;
     }
     NSMutableURLRequest *newRequest = [self.request mutableCopy];
     [NSURLProtocol setProperty:@YES forKey:@"Hijacked" inRequest:newRequest];
+    [newRequest addValue:@"118.88.88.88" forHTTPHeaderField:@"X-Real-IP"];
     self.connection = [NSURLConnection connectionWithRequest:newRequest delegate:self];
 }
 
