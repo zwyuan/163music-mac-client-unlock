@@ -11,9 +11,13 @@ fi
 
 [ ! -f "$PREFIX/MacOS/NeteaseMusic" ] && fail "NeteaseMusic is not installed."
 
-[ -f "$PREFIX/MacOS/NeteaseMusicExec" ] && fail "Patch is already installed."
+if [ "$1" != "-f" ]; then
+  [ -f "$PREFIX/MacOS/NeteaseMusicExec" ] && fail "Patch is already installed. Add '-f' to enforce install (update)."
+else
+  `dirname $0`/uninstall.sh 2>/dev/null
+fi
 
-[ ! -f "unlock.dylib" ] && clang -DOUTSIDE_CHINA -framework Foundation -o unlock.dylib -dynamiclib hijack.m || fail "Cannot compile library."
+clang -DOUTSIDE_CHINA $CFLAGS -framework Foundation -o unlock.dylib -dynamiclib hijack.m || fail "Cannot compile library."
 
 cp unlock.dylib $PREFIX/MacOS/unlock.dylib || fail "Cannot write target directory."
 
