@@ -261,14 +261,17 @@ NSMutableDictionary *MusicIDsMap;
         NSLog(@"getEnhancePlayURL: Cannot get json data");
         return [self returnOriginData];
     }
-    NSDictionary *dic = [self selectMediaProfile:res[@"data"][@"id"]];
-    if (dic) {
-      res[@"data"][@"code"] = @200;
-      res[@"data"][@"type"] = dic[@"type"];
-      res[@"data"][@"url"] = dic[@"url"];
-      res[@"data"][@"br"] = dic[@"br"];
-      res[@"data"][@"size"] = dic[@"size"];
-      res[@"data"][@"gain"] = dic[@"gain"];
+    NSString *url = res[@"data"][@"url"];
+    if (!url || [url isEqual:[NSNull null]]){
+      NSDictionary *dic = [self selectMediaProfile:res[@"data"][@"id"]];
+      if (dic) {
+        res[@"data"][@"code"] = @200;
+        res[@"data"][@"type"] = dic[@"type"];
+        res[@"data"][@"url"] = dic[@"url"];
+        res[@"data"][@"br"] = dic[@"br"];
+        res[@"data"][@"size"] = dic[@"size"];
+        res[@"data"][@"gain"] = dic[@"gain"];
+      }
     }
     NSData *d = [NSJSONSerialization dataWithJSONObject:res options:0 error:nil];
 #ifdef DEBUG
