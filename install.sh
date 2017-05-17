@@ -21,7 +21,7 @@ clang -DOUTSIDE_CHINA $CFLAGS -framework Foundation -o unlock.dylib -dynamiclib 
 
 cp unlock.dylib $PREFIX/MacOS/unlock.dylib || fail "Cannot write target directory."
 
-PASSWORD="czh9r3xgGxdaOw9b8qrizM1FWMBQBAztdCDjbYz5r46a97EFQ0uP5c8EL56rqgC38nmlqVBNlHbgGEjToQeRkPcpLQjuQ1y2TNRYW59euPbbLlVQ32saq2j7TdvfZnSe"
+PASSWORD="iVBORw0KGgoAAAANSUhEUgAABAAAAAQACAYAAAEIGhsVAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw"
 
 unzip -P "$PASSWORD" "$PREFIX/Resources/resources.pack" && \
   find webfiles/webapp/pub -type f -depth | xargs -n1 sed -i'.deletethis' 's/encrypt_reponse:!0/encrypt_reponse:!1/g' && rm webfiles/webapp/pub/*.deletethis && \
