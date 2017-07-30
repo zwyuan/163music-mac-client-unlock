@@ -30,6 +30,10 @@ NSMutableDictionary *MusicIDsMap;
         return YES;
       }else if([[[request URL] path] containsString:@"/eapi/copyright/restrict"]){
         return YES;
+      }else if([[[request URL] path] containsString:@"/eapi/v1/playlist/manipulate/tracks"]){
+        return YES;
+      }else if([[[request URL] path] containsString:@"/eapi/song/like"]){
+        return YES;
       }else if([[[request URL] path] containsString:@"/eapi/song/enhance/player/url"]){
         return YES;
       }else if([[[request URL] path] containsString:@"/eapi/song/enhance/download/url"]){
