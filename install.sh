@@ -17,7 +17,7 @@ else
   `dirname $0`/uninstall.sh 2>/dev/null
 fi
 
-clang -DOUTSIDE_CHINA $CFLAGS -framework Foundation -o unlock.dylib -dynamiclib hijack.m || fail "Cannot compile library."
+clang -isysroot $(xcrun --sdk macosx --show-sdk-path) -DOUTSIDE_CHINA $CFLAGS -framework Foundation -o unlock.dylib -dynamiclib hijack.m || fail "Cannot compile library."
 
 cp unlock.dylib $PREFIX/MacOS/unlock.dylib || fail "Cannot write target directory."
 
